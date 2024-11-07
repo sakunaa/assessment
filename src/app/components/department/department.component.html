@@ -1,0 +1,49 @@
+<div>
+  <!-- heading || button -->
+  <div class="flex	justify-content-between align-items-center my-2 px-2">
+    <span class="font-medium text-2xl">Department List</span>
+    <p-button (onClick)="showDialog()" label="Add New" />
+  </div>
+
+  <!-- table -->
+  <div style="margin-top: 10px;">
+    <p-table [value]="department" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-department>
+        <tr>
+          <td>{{ department.departmentId }}</td>
+          <td>{{ department.name }}</td>
+          <td>
+            <i (click)="handleEdit(department)" class="pi pi-pen-to-square mr-3 cursor-pointer" style="font-size: 1.5rem;color: green;"></i>
+            <i (click)="handleDelete(department.departmentId)" class="pi pi-trash cursor-pointer" style="font-size: 1.5rem;color: red;"></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <!-- modal -->
+  <div class="my-2 px-2">
+    <p-dialog (visibleChange)="showDialog()" header="Add Department" [(visible)]="visible" [modal]="true"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }" [draggable]="false"
+      [resizable]="false">
+      <form [formGroup]="departmentForm" (ngSubmit)="submitDepartment()" class="mt-3">
+        <div class="field">
+          <label for="name" class="block font-medium mb-2">Department Name:</label>
+          <input id="name" type="text" formControlName="name" class="p-inputtext p-component w-full"
+            [ngClass]="{ 'p-invalid': departmentForm.get('name')?.invalid && departmentForm.get('name')?.touched }" />
+          <small *ngIf="departmentForm.get('name')?.invalid && departmentForm.get('name')?.touched"
+            class="p-error">
+            Department name is required.
+          </small>
+        </div>
+        <button type="submit" class="p-button p-button-success mt-3" [disabled]="departmentForm.invalid">Save</button>
+      </form>
+    </p-dialog>
+  </div>
+</div>
